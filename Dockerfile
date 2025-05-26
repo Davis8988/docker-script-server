@@ -1,6 +1,7 @@
 FROM alpine:latest
+
 LABEL maintainer="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
-      org.opencontainers.image.created="$(date +%Y-%m-%d\ %H:%M)" \
+      org.opencontainers.image.created="$(date +%Y-%m-%d %H:%M)" \
       org.opencontainers.image.authors="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
       org.opencontainers.image.url="https://hub.docker.com/r/alcapone1933/script-server" \
       org.opencontainers.image.version="v1.17.1" \
@@ -10,19 +11,28 @@ LABEL maintainer="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
 
 ENV TZ=Europe/Berlin
 
-RUN apk add --update --no-cache python3 py3-pip curl && \
-    rm -rf /var/cache/apk/* && mkdir -p /app mkdir -p /app/conf && \
+# Install Python, Docker CLI, and dependencies
+RUN apk add --no-cache \
+        python3 \
+        py3-pip \
+        curl \
+        unzip \
+        docker-cli \
+        tzdata && \
+    rm -rf /var/cache/apk/* && \
+    mkdir -p /app /app/conf && \
     ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Copy configuration and script-server bundle
 COPY releases/latest /tmp
 COPY app/conf.json /app/conf/conf.json
 
 WORKDIR /app
 
-RUN  unzip /tmp/script-server.zip -d /app && rm -rfv /tmp/script-server.zip && \
-     pip install -r requirements.txt
+RUN unzip /tmp/script-server.zip -d /app && \
+    rm -f /tmp/script-server.zip && \
+    pip install -r requirements.txt
 
 EXPOSE 5000
 
 CMD [ "python3", "launcher.py" ]
-

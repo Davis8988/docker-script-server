@@ -17,4 +17,6 @@ fi
 
 
 # Build the Docker image
+echo "docker-compose build"
+echo ''
 docker-compose build

@@ -17,4 +17,6 @@ fi
 
 
 # start the Docker stack
+echo "docker-compose up -d"
+echo ''
 docker-compose up -d

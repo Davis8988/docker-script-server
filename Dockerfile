@@ -32,7 +32,7 @@ RUN apk add --no-cache \
 
 
 # Copy configuration and script-server bundle
-COPY app/conf.json /app/conf/conf.json
+COPY app/ /app/conf/
 
 WORKDIR /app
 

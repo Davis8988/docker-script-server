@@ -31,7 +31,7 @@ WORKDIR /app
 
 RUN unzip /tmp/script-server.zip -d /app && \
     rm -f /tmp/script-server.zip && \
-    pip install -r requirements.txt
+    pip install --break-system-packages -r requirements.txt
 
 EXPOSE 5000
 

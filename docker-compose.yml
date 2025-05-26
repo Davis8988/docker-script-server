@@ -3,7 +3,7 @@ services:
   script-server:
     build:
       dockerfile: Dockerfile
-    image: alcapone1933/script-server:latest
+    image: davis8988/script-server:latest
     container_name: script-server
     restart: always
     ports:

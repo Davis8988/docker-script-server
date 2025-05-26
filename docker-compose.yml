@@ -12,7 +12,6 @@ services:
       - TZ=Europe/Berlin
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      # - ./conf/conf-runtime.json:/app/conf/conf.json
       # - ./conf/runners/:/app/conf/runners
       # - ./conf/scripts/:/app/conf/scripts
       # - ./conf/logs/:/app/conf/scripts

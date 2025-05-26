@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script builds a Docker image for the application.
+# This script starts the Docker stack using Docker Compose.
 
-# Usage: ./build-image.sh
+# Usage: ./start_stack.sh
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null; then
@@ -16,5 +16,5 @@ if ! command -v docker-compose &> /dev/null; then
 fi
 
 
-# Build the Docker image
-docker-compose build
+# start the Docker stack
+docker-compose up -d

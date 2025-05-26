@@ -1,4 +1,19 @@
 {
-    "title": "Script server",
-    "port": "5000"
+  "title": "Script server",
+  "port": 5000,
+  "auth": {
+    "type": "htpasswd",
+    "htpasswd_path": "conf/.htpasswd"
+  },
+  "access": {
+    "allowed_users": ["onesim", "admin"],
+    "admin_users": ["admin"],
+  },
+  "logging": {
+    "execution_file": "$DATE-$ID.log",
+    "execution_date_format": "%y-%m-%d_%H-%M"
+  },
+  "security": {
+    "xsrf_protection": "token"
+  }
 }

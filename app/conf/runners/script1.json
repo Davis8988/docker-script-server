@@ -1,0 +1,25 @@
+{
+  "name": "test1",
+  "script_path": "conf/scripts/test1.sh",
+  "description": "testinggggg",
+  "output_format": "html_iframe",
+  "scheduling": {
+    "enabled": true
+  },
+  "parameters": [
+    {
+      "name": "PARAM_1",
+      "param": "PARAM_1",
+      "type": "text",
+      "default": "David444",
+      "description": "My Parameterrr",
+      "ui": {
+        "separator_before": {
+          "type": "line",
+          "title": "awesome params"
+        }
+      },
+      "env_var": "ENV_VAL_1"
+    }
+  ]
+}

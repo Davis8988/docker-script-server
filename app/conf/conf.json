@@ -7,7 +7,7 @@
   },
   "access": {
     "allowed_users": ["onesim", "admin"],
-    "admin_users": ["admin"],
+    "admin_users": ["admin"]
   },
   "logging": {
     "execution_file": "$DATE-$ID.log",

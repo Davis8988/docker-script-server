@@ -2,7 +2,7 @@
   "name": "test1",
   "script_path": "conf/scripts/test1.sh",
   "description": "testinggggg",
-  "output_format": "html_iframe",
+  "output_format": "terminal",
   "scheduling": {
     "enabled": true
   },

@@ -1,8 +1,12 @@
 {
   "name": "test1",
-  "script_path": "conf/scripts/test1.sh",
+  "script_path": "/app/conf/scripts/test1.sh",
   "working_directory": "/tmp",
   "description": "testinggggg",
+  "output_files": [
+    "/var/log/server.log",
+    "/tmp/results/**.txt"
+  ],
   "output_format": "terminal",
   "scheduling": {
     "enabled": true
@@ -20,11 +24,7 @@
           "title": "awesome params"
         }
       },
-      "env_var": "ENV_VAL_1"
+      "env_var": "PARAM_1"
     }
-  ],
-  "output_files": [
-        "/var/log/server.log",
-        "/tmp/results/**.txt"
-    ]
+  ]
 }

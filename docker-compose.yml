@@ -14,6 +14,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./app/conf/conf.json:/app/conf/conf.json
       - ./app/conf/.htpasswd:/app/conf/.htpasswd
-      # - ./conf/runners/:/app/conf/runners
-      # - ./conf/scripts/:/app/conf/scripts
+      - ./app/conf/runners/:/app/conf/runners
+      - ./app/conf/scripts/:/app/conf/scripts
       # - ./conf/logs/:/app/conf/scripts

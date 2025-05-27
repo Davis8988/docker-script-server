@@ -1,6 +1,7 @@
 {
   "name": "test1",
   "script_path": "conf/scripts/test1.sh",
+  "working_directory": "/tmp",
   "description": "testinggggg",
   "output_format": "terminal",
   "scheduling": {

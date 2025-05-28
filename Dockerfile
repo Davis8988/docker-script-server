@@ -10,7 +10,7 @@ RUN apt-get update && \
 
 # Clone tippecanoe at the specified tag
 WORKDIR /tmp
-RUN git clone --branch 2.78.0 --depth 1 https://github.com/felt/tippecanoe.git tippecanoe-src
+RUN git clone --branch 2.78.0 https://github.com/felt/tippecanoe.git tippecanoe-src
 
 # Build tippecanoe
 WORKDIR /tmp/tippecanoe-src

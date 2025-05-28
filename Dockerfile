@@ -1,10 +1,30 @@
-# Use UBI 8 with Python 3.9
-FROM registry.access.redhat.com/ubi8/python-39
+# ---------------------------
+# Stage 1: Build Tippecanoe
+# ---------------------------
+FROM ubuntu:22.04 AS tippecanoe-builder
 
-# Argument for Script Server version
+# Install build tools
+RUN apt-get update && \
+    apt-get -y install git make gcc g++ libsqlite3-dev zlib1g-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Clone tippecanoe at the specified tag
+WORKDIR /tmp
+RUN git clone --branch 2.78.0 --depth 1 https://github.com/felt/tippecanoe.git tippecanoe-src
+
+# Build tippecanoe
+WORKDIR /tmp/tippecanoe-src
+RUN make
+
+
+
+# ---------------------------
+# Stage 2: Final Image
+# ---------------------------
+FROM python:3.12-slim
+
 ARG VERSION=1.18.0
 
-# Labels for metadata
 LABEL maintainer="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
       org.opencontainers.image.created="$(date +%Y-%m-%d %H:%M)" \
       org.opencontainers.image.authors="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
@@ -14,35 +34,38 @@ LABEL maintainer="alcapone1933 <alcapone1933@cosanostra-cloud.de>" \
       org.opencontainers.image.title="script-server" \
       org.opencontainers.image.description="Web UI for your scripts with execution management"
 
-# Set timezone to Israel
 ENV TZ=Asia/Jerusalem
+ENV PYTHONUNBUFFERED=1
 
-# Install required packages
-RUN microdnf install -y \
+# Install dependencies, timezone, script-server, and Python packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
         curl \
         unzip \
         tzdata \
-        docker \
-    && microdnf clean all \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-    && echo $TZ > /etc/timezone \
-    && mkdir -p /app/conf \
-    && curl -L https://github.com/bugy/script-server/releases/download/$VERSION/script-server.zip -o /tmp/script-server.zip
+        docker.io \
+        libsqlite3-0 && \
+    ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && \
+    echo ${TZ} > /etc/timezone && \
+    mkdir -p /app/conf && \
+    curl -L https://github.com/bugy/script-server/releases/download/${VERSION}/script-server.zip -o /tmp/script-server.zip && \
+    unzip /tmp/script-server.zip -d /app && \
+    rm -f /tmp/script-server.zip && \
+    pip install --no-cache-dir -r /app/requirements.txt && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy custom configuration
+# Copy tippecanoe binaries
+COPY --from=tippecanoe-builder /tmp/tippecanoe-src/tippecanoe* /usr/local/bin/
+COPY --from=tippecanoe-builder /tmp/tippecanoe-src/tile-join /usr/local/bin/
+
+# Copy app config
 COPY app/ /app/
 
 # Set working directory
 WORKDIR /app
 
-# Unzip script-server and install Python requirements
-RUN unzip /tmp/script-server.zip -d /app && \
-    rm -f /tmp/script-server.zip && \
-    pip3 install --no-cache-dir -r requirements.txt
-
-# Expose the application port
+# Expose Script Server port
 EXPOSE 5000
 
-# Run the script-server
-CMD ["python3", "launcher.py"]
-
+# Launch Script Server
+CMD ["python", "launcher.py"]

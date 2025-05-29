@@ -44,6 +44,7 @@ RUN apt-get update && \
         unzip \
         tzdata \
         docker.io \
+        vim-tiny \
         libsqlite3-0 && \
     ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && \
     echo ${TZ} > /etc/timezone && \
